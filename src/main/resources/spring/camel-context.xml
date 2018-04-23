@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        
+    	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    	
+    <!-- Define a traditional camel context here -->
+    <camelContext id="fis-workshop-camel-context" xmlns="http://camel.apache.org/schema/spring">
+    	<!-- Lab 04: API REST DSL -->
+    	<!-- 
+		<dataFormats>
+			<json id="pojo2json" library="Jackson"/>
+			<json id="json2pojo" library="Jackson" unmarshalTypeName="org.jboss.fuse.fis.workshop.model.Message"/>
+		</dataFormats>
+		-->
+
+    	<!-- REST Configuration -->
+    	<!-- 
+		<restConfiguration apiContextPath="api-docs" bindingMode="auto" component="servlet" contextPath="/fis-workshop">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="FIS-Workshop - REST Camel API"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        -->
+        
+        <!-- API REST Definition -->
+        <!-- 
+        <rest id="api-rest-definition" path="/api">
+            <get id="api-definition-test" uri="test"
+            	produces="application/json">
+            	<description>Testing API Rest</description>
+                <to uri="direct:api-route-test"/>
+            </get>
+            <post id="api-definition-sync" uri="sync"
+            	consumes="application/json" produces="application/json" 
+            	type="org.jboss.fuse.fis.workshop.model.Message"
+            	outType="org.jboss.fuse.fis.workshop.model.Message">
+            	<description>Sending a Message in Synchronous Mode (Request/Reply) to AMQ</description>
+            	<param name="message" type="body" description="Message to process" dataType="org.jboss.fuse.fis.workshop.model.Message"/>
+            	<to uri="direct:api-route-sync"/>
+            </post>
+            <post id="api-definition-async" uri="async"
+            	consumes="application/json" produces="application/json"
+				type="org.jboss.fuse.fis.workshop.model.Message"
+            	outType="org.jboss.fuse.fis.workshop.model.Message"            	>
+            	<description>Sending a Message in Asynchronous Mode to AMQ</description>
+            	<param name="message" type="body" description="Message to process" dataType="org.jboss.fuse.fis.workshop.model.Message"/>
+            	<to uri="direct:api-route-async"/>
+            </post>
+        </rest>
+        -->    
+        
+        <!-- API REST Routes -->
+        <!-- 
+        <route id="api-route-test">
+        	<from id="direct-api-route-test" uri="direct:api-route-test"/>
+			<log message="[REST] >>> Test Message from API Rest"/>
+			<setBody>
+				<constant>Test Message from API Rest</constant>
+			</setBody>
+        </route>
+        <route id="api-route-sync">
+        	<from id="direct-api-route-sync" uri="direct:api-route-sync"/>
+			<log message="[REST-SYNC] >>> Processing message in Synchronous Mode: ${body}"/>
+			<bean id="message-sync" ref="messageService" method="sync"/>
+			<marshal id="sync-marshal2json" ref="pojo2json"/>
+			<log message="[REST-SYNC] >>> Put Message into AMQ: ${body}"/>
+			<to id="_to3" uri="amq:queue:messages?exchangePattern=InOut"/>
+			<log message="[REST-SYNC] >>> Processed message in Synchronous Mode: ${body}"/>
+			<unmarshal id="sync-unmarshal2pojo" ref="json2pojo"/>
+        </route>
+        <route id="api-route-async">
+        	<from id="direct-api-route-async" uri="direct:api-route-async"/>
+			<log message="[REST-ASYNC] >>> Processing message in Asynchronous Mode: ${body}"/>
+			<bean id="message-async" ref="messageService" method="async"/>
+            <marshal id="async-marshal2json" ref="pojo2json"/>
+            <log message="[REST-ASYNC] >>> Put Message into AMQ: ${body}"/>
+            <wireTap id="wireTap2amq" uri="amq:queue:messages"/>
+            <log message="[REST-ASYNC] >>> Processed message in Asynchronous Mode: ${body}"/>
+            <unmarshal id="async-unmarshal2pojo" ref="json2pojo"/>
+        </route>
+        -->
+
+		<!-- Lab 02: Simple Camel Route -->
+        <route id="simple-xml-route">
+            <from id="route-timer" uri="timer:xml?period={{route.xml.period}}"/>
+            <transform id="route-transform">
+                <method method="simpleTransform" ref="myTransformer"/>
+            </transform>
+            <log id="route-log" message="[XML] >>> ${body}"/>
+        </route>
+    </camelContext>
+</beans>
