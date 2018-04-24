@@ -70,7 +70,6 @@
 
 		<!-- Lab 03 -->
 		<!-- ActiveMQ -->
-		<!-- 
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-camel</artifactId>
@@ -79,7 +78,6 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
 		</dependency>
-		-->
 
 		<!-- Lab 04 -->
 		<!-- Apache Camel Starters for API REST DSL -->

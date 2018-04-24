@@ -24,11 +24,12 @@ import org.springframework.stereotype.Component;
 /**
  * Lab 03, 04: AMQ Camel Route builder
  */
-// @Component
+@Component
 public class MessagingDSLRouteBuilder extends RouteBuilder {
 	
-	@Autowired
-	private MessageServiceBean messageService;
+	// Lab 04
+	// @Autowired
+	// private MessageServiceBean messageService;
 
 	@Override
 	public void configure() throws Exception {

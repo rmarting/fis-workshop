@@ -23,9 +23,9 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 // load regular Spring XML file from the classpath that contains the Camel XML DSL
 // Lab 02
-@ImportResource({"classpath:/spring/camel-context.xml"})
+// @ImportResource({"classpath:/spring/camel-context.xml"})
 // Lab 03
-// @ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/camel-context.xml"})
+@ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/camel-context.xml"})
 // Lab 04
 // @ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/api-rest.xml", "classpath:/spring/camel-context.xml"})
 public class Application {
