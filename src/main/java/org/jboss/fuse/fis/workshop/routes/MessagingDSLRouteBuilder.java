@@ -44,13 +44,13 @@ public class MessagingDSLRouteBuilder extends RouteBuilder {
 			.log("[AMQ] >>> Getting message ${body} from queue");
 
 		// Lab 04
-		from("amq:queue:messages")
-			.id("route-amq-get-message")
-			.log("[AMQ] >>> Getting message ${body} from queue")
-			.unmarshal("json2pojo")
-			.bean(messageService, "processDone")
-			.marshal("json2pojo")
-			.log("[AMQ] >>> Processed message ${body} from queue");		
+//		from("amq:queue:messages")
+//			.id("route-amq-get-message")
+//			.log("[AMQ] >>> Getting message ${body} from queue")
+//			.unmarshal("json2pojo")
+//			.bean(messageService, "processDone")
+//			.marshal("json2pojo")
+//			.log("[AMQ] >>> Processed message ${body} from queue");		
 	}
 
 }

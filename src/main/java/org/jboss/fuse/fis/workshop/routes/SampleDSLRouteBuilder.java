@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 /**
  * Lab 02: Camel Route builder
  */
-// @Component
+@Component
 public class SampleDSLRouteBuilder extends RouteBuilder {
 
 	@Override

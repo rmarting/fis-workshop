@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:camel="http://camel.apache.org/schema/spring"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="
-    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        
-    	http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
-    	
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd              http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
     <!-- Define a traditional camel context here -->
     <camelContext id="fis-workshop-camel-context" xmlns="http://camel.apache.org/schema/spring">
-    	<!-- Lab 04: API REST DSL -->
-    	<!-- 
+        <!-- Lab 04: API REST DSL -->
+        <!-- 
 		<dataFormats>
 			<json id="pojo2json" library="Jackson"/>
 			<json id="json2pojo" library="Jackson" unmarshalTypeName="org.jboss.fuse.fis.workshop.model.Message"/>
 		</dataFormats>
 		-->
-
-    	<!-- REST Configuration -->
-    	<!-- 
+        <!-- REST Configuration -->
+        <!-- 
 		<restConfiguration apiContextPath="api-docs" bindingMode="auto" component="servlet" contextPath="/fis-workshop">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS-Workshop - REST Camel API"/>
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
         -->
-        
         <!-- API REST Definition -->
         <!-- 
         <rest id="api-rest-definition" path="/api">
@@ -50,8 +44,7 @@
             	<to uri="direct:api-route-async"/>
             </post>
         </rest>
-        -->    
-        
+        -->
         <!-- API REST Routes -->
         <!-- 
         <route id="api-route-test">
@@ -82,8 +75,7 @@
             <unmarshal id="async-unmarshal2pojo" ref="json2pojo"/>
         </route>
         -->
-
-		<!-- Lab 02: Simple Camel Route -->
+        <!-- Lab 02: Simple Camel Route -->
         <route id="simple-xml-route">
             <from id="route-timer" uri="timer:xml?period={{route.xml.period}}"/>
             <transform id="route-transform">

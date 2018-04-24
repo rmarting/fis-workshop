@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Lab 02: ConfigMaps
  */
-// @Component
+@Component
 public class MessageBean {
 	
 	@Autowired

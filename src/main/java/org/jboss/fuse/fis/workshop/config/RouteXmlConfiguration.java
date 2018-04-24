@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Lab 02: ConfigMaps
  */
-// @Configuration
-// @ConfigurationProperties(prefix = "route.xml")
+@Configuration
+@ConfigurationProperties(prefix = "route.xml")
 public class RouteXmlConfiguration {
 
     /**

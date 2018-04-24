@@ -1,0 +1,11 @@
+# Lab 02: ConfigMaps
+# Startup configuration of Spring-cloud-kubernetes
+spring:
+  application:
+    name: fis-workshop
+  cloud:
+    kubernetes:
+      reload:
+        # Enable live reload on ConfigMap change (disabled for Secrets by default)
+        enabled: true
+        # strategy: restart_context

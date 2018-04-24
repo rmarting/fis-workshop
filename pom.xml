@@ -63,12 +63,10 @@
 
 		<!-- Lab 02 -->
 		<!-- Spring Cloud Kubernetes -->
-		<!-- 
 		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>spring-cloud-kubernetes-core</artifactId>
 		</dependency>
-		-->
 
 		<!-- Lab 03 -->
 		<!-- ActiveMQ -->
