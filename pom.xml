@@ -81,7 +81,6 @@
 
 		<!-- Lab 04 -->
 		<!-- Apache Camel Starters for API REST DSL -->
-		<!-- 
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-servlet-starter</artifactId>
@@ -94,7 +93,6 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-swagger-java-starter</artifactId>
 		</dependency>
-		-->
 
 		<!-- testing -->
 		<dependency>

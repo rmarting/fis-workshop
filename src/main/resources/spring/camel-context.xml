@@ -5,48 +5,45 @@
     <!-- Define a traditional camel context here -->
     <camelContext id="fis-workshop-camel-context" xmlns="http://camel.apache.org/schema/spring">
         <!-- Lab 04: API REST DSL -->
-        <!-- 
 		<dataFormats>
 			<json id="pojo2json" library="Jackson"/>
 			<json id="json2pojo" library="Jackson" unmarshalTypeName="org.jboss.fuse.fis.workshop.model.Message"/>
 		</dataFormats>
-		-->
         <!-- REST Configuration -->
-        <!-- 
 		<restConfiguration apiContextPath="api-docs" bindingMode="auto" component="servlet" contextPath="/fis-workshop">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS-Workshop - REST Camel API"/>
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
-        -->
         <!-- API REST Definition -->
-        <!-- 
         <rest id="api-rest-definition" path="/api">
-            <get id="api-definition-test" uri="test"
-            	produces="application/json">
-            	<description>Testing API Rest</description>
+            <get id="api-definition-test" produces="application/json" uri="test">
+                <description>Testing API Rest</description>
                 <to uri="direct:api-route-test"/>
             </get>
-            <post id="api-definition-sync" uri="sync"
-            	consumes="application/json" produces="application/json" 
-            	type="org.jboss.fuse.fis.workshop.model.Message"
-            	outType="org.jboss.fuse.fis.workshop.model.Message">
-            	<description>Sending a Message in Synchronous Mode (Request/Reply) to AMQ</description>
-            	<param name="message" type="body" description="Message to process" dataType="org.jboss.fuse.fis.workshop.model.Message"/>
-            	<to uri="direct:api-route-sync"/>
+            <post consumes="application/json" id="api-definition-sync"
+                outType="org.jboss.fuse.fis.workshop.model.Message"
+                produces="application/json"
+                type="org.jboss.fuse.fis.workshop.model.Message" uri="sync">
+                <description>Sending a Message in Synchronous Mode (Request/Reply) to AMQ</description>
+                <param
+                    dataType="org.jboss.fuse.fis.workshop.model.Message"
+                    description="Message to process" name="message" type="body"/>
+                <to uri="direct:api-route-sync"/>
             </post>
-            <post id="api-definition-async" uri="async"
-            	consumes="application/json" produces="application/json"
-				type="org.jboss.fuse.fis.workshop.model.Message"
-            	outType="org.jboss.fuse.fis.workshop.model.Message"            	>
-            	<description>Sending a Message in Asynchronous Mode to AMQ</description>
-            	<param name="message" type="body" description="Message to process" dataType="org.jboss.fuse.fis.workshop.model.Message"/>
-            	<to uri="direct:api-route-async"/>
+            <post consumes="application/json" id="api-definition-async"
+                outType="org.jboss.fuse.fis.workshop.model.Message"
+                produces="application/json"
+                type="org.jboss.fuse.fis.workshop.model.Message" uri="async">
+                <description>Sending a Message in Asynchronous Mode to AMQ</description>
+                <param
+                    dataType="org.jboss.fuse.fis.workshop.model.Message"
+                    description="Message to process" name="message" type="body"/>
+                <to uri="direct:api-route-async"/>
             </post>
         </rest>
-        -->
+
         <!-- API REST Routes -->
-        <!-- 
         <route id="api-route-test">
         	<from id="direct-api-route-test" uri="direct:api-route-test"/>
 			<log message="[REST] >>> Test Message from API Rest"/>
@@ -74,7 +71,7 @@
             <log message="[REST-ASYNC] >>> Processed message in Asynchronous Mode: ${body}"/>
             <unmarshal id="async-unmarshal2pojo" ref="json2pojo"/>
         </route>
-        -->
+
         <!-- Lab 02: Simple Camel Route -->
         <route id="simple-xml-route">
             <from id="route-timer" uri="timer:xml?period={{route.xml.period}}"/>
