@@ -7,7 +7,7 @@
 
 	<groupId>org.jboss.fuse.fis</groupId>
 	<artifactId>fis-workshop</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<name>FIS :: WorkShop :: Spring-Boot :: Camel XML </name>
 	<description>Spring Boot example running a Camel route defined in XML</description>
@@ -16,14 +16,14 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- maven plugin versions -->
-		<fabric8.maven.plugin.version>3.1.80.redhat-000022</fabric8.maven.plugin.version>
+		<fabric8.maven.plugin.version>3.5.33.fuse-000023-redhat-3</fabric8.maven.plugin.version>
 
 		<!-- configure the versions you want to use here -->
-		<fabric8.version>2.2.170.redhat-000022</fabric8.version>
-		<spring-boot.version>1.4.1.RELEASE</spring-boot.version>
+        <fabric8.version>3.0.8.fuse-000023-redhat-4</fabric8.version>
+        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
 
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-		<maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -141,6 +141,7 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<inherited>true</inherited>
 				<configuration>
+                    <argLine>-DenableImageStreamDetection=true</argLine>
 					<excludes>
 						<exclude>**/*KT.java</exclude>
 					</excludes>

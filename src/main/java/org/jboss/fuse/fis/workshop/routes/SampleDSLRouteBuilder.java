@@ -33,6 +33,22 @@ public class SampleDSLRouteBuilder extends RouteBuilder {
 				.method(MessageBean.class, "getGreetingMessage")
 				//.constant("{{route.dsl.body}}")
 			.log("[DSL] >>> ${body}");
+		
+		
+		from("file:work/cbr/input").id("cbr-route")
+			.split()
+				.xpath("//order")
+				.choice()
+					.when()
+						.xpath("/order:order/order:type = 'E'")
+						.to("amqp:queue.electronic")
+					.otherwise()
+						.recipientList()
+							.simple("http4://otherservice")
+				.end()
+			.end();
+		
+		
 	}
 
 }
