@@ -4,6 +4,47 @@ This example demonstrates how to configure Camel routes in Spring Boot via a Spr
 
 The application utilizes the Spring [`@ImportResource`](http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/context/annotation/ImportResource.html) annotation to load a Camel Context definition via a [camel-context.xml](src/main/resources/spring/camel-context.xml) file on the classpath.
 
+### OpenShift
+
+It is recommendable to install and deploy a local OpenShift instance to deploy the next components:
+
+* AMQ Broker Service
+* Spring Boot application with Apache Camel Routes
+
+To have a local OpenShift instance, **minishift** is the best way. Follow the next link to install locally: 
+
+* [Minishit Quickstart](https://docs.openshift.org/latest/minishift/getting-started/quickstart.html)
+
+Create a new project to deploy everything:
+
+    $ oc new-project fis-workshop
+    
+To deploy the Red Hat images needed:
+
+* Fuse Integration Services images (Apache Camel for Spring Boot)
+
+    $ oc create -n openshift -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json
+
+* AMQ templates and images:
+
+    $ oc create -n openshift -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-basic.json
+    $ oc create -n openshift -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq63-image-stream.json 
+
+* To deploy a new AMQ broker
+
+    $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default
+    $ oc new-app --template=amq63-basic \
+      -p APPLICATION_NAME=broker \
+      -p MQ_USERNAME=admin \
+      -p MQ_PASSWORD=admin \
+      -p AMQ_MESH_DISCOVERY_TYPE=kube \
+      -p MQ_PROTOCOL=openwire,amqp
+
+* Allow *view role* for some Service Accounts needed:
+
+    $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default
+    $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):fis-workshop
+
 ### Building
 
 The example can be built with
@@ -55,3 +96,12 @@ Once the container image has been built and deployed in OpenShift, the integrati
 The test is disabled by default and has to be enabled using `-Dtest`. Open Source Community documentation at [Integration Testing](https://fabric8.io/guide/testing.html) and [Fabric8 Arquillian Extension](https://fabric8.io/guide/arquillian.html) provide more information on writing full fledged black box integration tests for OpenShift. 
 
 
+### Verify Application
+
+If the deployment process works successfully, the following links will show the Swagger documentation:
+
+* http://fis-workshop-fis-workshop.127.0.0.1.nip.io/fis-workshop/api-docs
+
+This link show the result of test API route:
+
+* http://fis-workshop-fis-workshop.127.0.0.1.nip.io/fis-workshop/api/test
