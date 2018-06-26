@@ -32,7 +32,6 @@ To deploy the Red Hat images needed:
 
 * To deploy a new AMQ broker
 
-    $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default
     $ oc new-app --template=amq63-basic \
       -p APPLICATION_NAME=broker \
       -p MQ_USERNAME=admin \
@@ -44,6 +43,7 @@ To deploy the Red Hat images needed:
 
     $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default
     $ oc policy add-role-to-user view system:serviceaccount:$(oc project -q):fis-workshop
+
 
 ### Building
 
