@@ -7,20 +7,21 @@
 
 	<groupId>org.jboss.fuse.fis</groupId>
 	<artifactId>fis-workshop</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 
-	<name>FIS :: WorkShop :: Spring-Boot :: Camel XML </name>
-	<description>Spring Boot example running a Camel route defined in XML</description>
+	<name>Fuse 7 :: WorkShop :: Spring-Boot :: Sample Routes </name>
+	<description>
+		Spring Boot example running a Camel route defined in XML, RouterBuilders, REST DSL, 
+		AMQP and ConfigMap on OpenShift.
+	</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<!-- maven plugin versions -->
-		<fabric8.maven.plugin.version>3.5.33.fuse-000023-redhat-3</fabric8.maven.plugin.version>
-
-		<!-- configure the versions you want to use here -->
-        <fabric8.version>3.0.8.fuse-000023-redhat-4</fabric8.version>
-        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+		<!-- Fuse 7 configure the versions you want to use here -->
+		<fuse.version>7.0.0.fuse-000191-redhat-1</fuse.version>
+		<bom.version>7.0.0.fuse-000027-redhat-1</bom.version>
+		<spring-boot.version>1.5.12.RELEASE</spring-boot.version>
 
 		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
 		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
@@ -29,9 +30,9 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.fabric8</groupId>
-				<artifactId>fabric8-project-bom-camel-spring-boot</artifactId>
-				<version>${fabric8.version}</version>
+				<groupId>org.jboss.redhat-fuse</groupId>
+				<artifactId>fuse-springboot-bom</artifactId>
+				<version>${bom.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -66,17 +67,19 @@
 		<dependency>
 			<groupId>io.fabric8</groupId>
 			<artifactId>spring-cloud-kubernetes-core</artifactId>
+			<version>0.1.6.fuse-000018-redhat-2</version>
 		</dependency>
 
 		<!-- Lab 03 -->
-		<!-- ActiveMQ -->
+		<!-- Camel AMQP -->
 		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-camel</artifactId>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-amqp</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-pool</artifactId>
+			<groupId>org.apache.qpid</groupId>
+			<artifactId>qpid-jms-client</artifactId>
 		</dependency>
 
 		<!-- Lab 04 -->
@@ -141,7 +144,7 @@
 				<version>${maven-surefire-plugin.version}</version>
 				<inherited>true</inherited>
 				<configuration>
-                    <argLine>-DenableImageStreamDetection=true</argLine>
+					<argLine>-DenableImageStreamDetection=true</argLine>
 					<excludes>
 						<exclude>**/*KT.java</exclude>
 					</excludes>
@@ -162,9 +165,9 @@
 			</plugin>
 
 			<plugin>
-				<groupId>io.fabric8</groupId>
+				<groupId>org.jboss.redhat-fuse</groupId>
 				<artifactId>fabric8-maven-plugin</artifactId>
-				<version>${fabric8.maven.plugin.version}</version>
+				<version>${bom.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -174,7 +177,56 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jboss.redhat-fuse</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${bom.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+		
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.jboss.redhat-fuse
+										</groupId>
+										<artifactId>
+											fabric8-maven-plugin
+										</artifactId>
+										<versionRange>
+											[7.0.0.fuse-000027-redhat-1,)
+										</versionRange>
+										<goals>
+											<goal>resource</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<profiles>

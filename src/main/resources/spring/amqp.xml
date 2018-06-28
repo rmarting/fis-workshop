@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Lab 03 -->
+    <!-- Discovers the Qpid JMS Connection service dynamically -->
+    <bean id="jmsConnectionFactory" class="org.apache.qpid.jms.JmsConnectionFactory" primary="true">
+        <!--
+            The following properties can be customized in the application.properties file.
+            Values can be changed using external environment variables (see application.properties for details).
+        -->
+        <property name="remoteURI" value="${amqp.broker.url:#null}"/>
+        <property name="username" value="${amqp.broker.username:#null}"/>
+        <property name="password" value="${amqp.broker.password:#null}"/>
+    </bean>
+
+    <bean id="jmsCachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+      <property name="targetConnectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration" >
+      <property name="connectionFactory" ref="jmsCachingConnectionFactory" /> 
+      <property name="cacheLevelName" value="CACHE_CONSUMER" />
+    </bean>    
+
+    <bean id="amqp" class="org.apache.camel.component.amqp.AMQPComponent">
+        <property name="configuration" ref="jmsConfig" />
+    </bean>
+
+</beans>

@@ -34,19 +34,19 @@ public class MessagingDSLRouteBuilder extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		// Lab 03
-		from("timer://amq?period=30s")
-			.id("route-amq-put-number")
+		from("timer://amqp?period=30s")
+			.id("route-amqp-put-number")
 			.transform(method(MyTransformer.class, "simpleTransform"))
 			.log("[AMQ] >>> Putting message ${body} to queue")
-			.to("amq:queue:numbers");
+			.to("amqp:queue:numbers");
 
-		from("amq:queue:numbers")
-			.id("route-amq-get-number")
+		from("amqp:queue:numbers")
+			.id("route-amqp-get-number")
 			.log("[AMQ] >>> Getting message ${body} from queue");
 
 		// Lab 04
-		from("amq:queue:messages")
-			.id("route-amq-get-message")
+		from("amqp:queue:messages")
+			.id("route-amqp-get-message")
 			.log("[AMQ] >>> Getting message ${body} from queue")
 			.unmarshal("json2pojo")
 			.bean(messageService, "processDone")

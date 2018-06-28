@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:camel="http://camel.apache.org/schema/spring"
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd              http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
     <!-- Define a traditional camel context here -->
     <camelContext id="fis-workshop-camel-context" xmlns="http://camel.apache.org/schema/spring">
@@ -9,7 +10,8 @@
             <json id="json2pojo" library="Jackson" unmarshalTypeName="org.jboss.fuse.fis.workshop.model.Message"/>
         </dataFormats>
         <!-- REST Configuration -->
-        <restConfiguration apiContextPath="api-docs" bindingMode="auto" component="servlet" contextPath="/fis-workshop">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="servlet" contextPath="/fis-workshop">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS-Workshop - REST Camel API"/>
             <apiProperty key="api.version" value="1.0.0"/>
@@ -21,19 +23,23 @@
                 <to uri="direct:api-route-test"/>
             </get>
             <post consumes="application/json" id="api-definition-sync"
-                outType="org.jboss.fuse.fis.workshop.model.Message" produces="application/json"
+                outType="org.jboss.fuse.fis.workshop.model.Message"
+                produces="application/json"
                 type="org.jboss.fuse.fis.workshop.model.Message" uri="sync">
-                <description>Sending a Message in Synchronous Mode (Request/Reply) to AMQ</description>
-                <param dataType="org.jboss.fuse.fis.workshop.model.Message" description="Message to process"
-                    name="message" type="body"/>
+                <description>Sending a Message in Synchronous Mode (Request/Reply) to AMQP</description>
+                <param
+                    dataType="org.jboss.fuse.fis.workshop.model.Message"
+                    description="Message to process" name="message" type="body"/>
                 <to uri="direct:api-route-sync"/>
             </post>
             <post consumes="application/json" id="api-definition-async"
-                outType="org.jboss.fuse.fis.workshop.model.Message" produces="application/json"
+                outType="org.jboss.fuse.fis.workshop.model.Message"
+                produces="application/json"
                 type="org.jboss.fuse.fis.workshop.model.Message" uri="async">
-                <description>Sending a Message in Asynchronous Mode to AMQ</description>
-                <param dataType="org.jboss.fuse.fis.workshop.model.Message" description="Message to process"
-                    name="message" type="body"/>
+                <description>Sending a Message in Asynchronous Mode to AMQP</description>
+                <param
+                    dataType="org.jboss.fuse.fis.workshop.model.Message"
+                    description="Message to process" name="message" type="body"/>
                 <to uri="direct:api-route-async"/>
             </post>
         </rest>
@@ -50,8 +56,8 @@
             <log id="_log2" message="[REST-SYNC] >>> Processing message in Synchronous Mode: ${body}"/>
             <bean id="message-sync" method="sync" ref="messageService"/>
             <marshal id="sync-marshal2json" ref="pojo2json"/>
-            <log id="_log3" message="[REST-SYNC] >>> Put Message into AMQ: ${body}"/>
-            <to id="_to3" uri="amq:queue:messages?exchangePattern=InOut"/>
+            <log id="_log3" message="[REST-SYNC] >>> Put Message into AMQP: ${body}"/>
+            <to id="_to3" uri="amqp:queue:messages?exchangePattern=InOut"/>
             <log id="_log4" message="[REST-SYNC] >>> Processed message in Synchronous Mode: ${body}"/>
             <unmarshal id="sync-unmarshal2pojo" ref="json2pojo"/>
         </route>
@@ -60,8 +66,8 @@
             <log id="_log5" message="[REST-ASYNC] >>> Processing message in Asynchronous Mode: ${body}"/>
             <bean id="message-async" method="async" ref="messageService"/>
             <marshal id="async-marshal2json" ref="pojo2json"/>
-            <log id="_log6" message="[REST-ASYNC] >>> Put Message into AMQ: ${body}"/>
-            <wireTap id="wireTap2amq" uri="amq:queue:messages"/>
+            <log id="_log6" message="[REST-ASYNC] >>> Put Message into AMQP: ${body}"/>
+            <wireTap id="wireTap2amqp" uri="amqp:queue:messages"/>
             <log id="_log7" message="[REST-ASYNC] >>> Processed message in Asynchronous Mode: ${body}"/>
             <unmarshal id="async-unmarshal2pojo" ref="json2pojo"/>
         </route>
@@ -73,27 +79,5 @@
             </transform>
             <log id="route-log" message="[XML] >>> ${body}"/>
         </route>
-        
-        
-        
-        <route id="cbr-route">
-            <from id="_from1" uri="file:work/cbr/input"/>
-            <split id="_split1">
-                <xpath>//orders</xpath>
-                <choice id="_choice1">
-                    <when id="_when1">
-                        <xpath>/order:order/order:type = 'E'</xpath>
-                        <to id="_to1" uri="amqp:queue:electronic"/>
-                    </when>
-                    <otherwise id="_otherwise1">
-                        <recipientList id="_recipientList1">
-                            <simple>http4://otherservice</simple>
-                        </recipientList>
-                    </otherwise>
-                </choice>
-            </split>
-        </route>
-        
-        
     </camelContext>
 </beans>
