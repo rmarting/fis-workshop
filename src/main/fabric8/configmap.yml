@@ -9,6 +9,7 @@ data:
     # OpenShift Properties
     route.xml.period=30s
     route.dsl.period=45s
+
     # Messages
     route.xml.body=(ConfigMap) Generated Number
     route.dsl.body=(ConfigMap) Hi World!

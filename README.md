@@ -25,6 +25,7 @@ To deploy a single basic AMQ broker you could install the images and basic templ
 
 Create the broker:
 
+    oc policy add-role-to-user view system:serviceaccount:$(oc project -q):default
     oc new-app --template=amq63-basic \
       -p APPLICATION_NAME=broker \
       -p MQ_USERNAME=admin \
