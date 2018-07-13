@@ -41,3 +41,9 @@ data:
     # The following credentials are valid for Arquillian tests (see 'src/test/resources/amq.json').
     activemq.broker.username=admin
     activemq.broker.password=admin
+    
+    # AMQP Broker
+    # amqp.broker.url = amqps://messaging-enmasse.192.168.42.59.nip.io:443?sslEnabled=true&transport.trustAll=true&transport.verifyHost=false
+    amqp.broker.url = amqp://messaging.enmasse.svc:5672
+    amqp.broker.username = developer
+    amqp.broker.password = developer

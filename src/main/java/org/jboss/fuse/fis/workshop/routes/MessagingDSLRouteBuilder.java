@@ -33,25 +33,25 @@ public class MessagingDSLRouteBuilder extends RouteBuilder {
 
 	@Override
 	public void configure() throws Exception {
-		// Lab 03
-		from("timer://amq?period=30s")
-			.id("route-amq-put-number")
+		// Lab 03, Lab 05 (amqp)
+		from("timer://amqp?period=30s")
+			.id("route-amqp-put-number")
 			.transform(method(MyTransformer.class, "simpleTransform"))
-			.log("[AMQ] >>> Putting message ${body} to queue")
-			.to("amq:queue:numbers");
+			.log("[AMQP] >>> Putting message ${body} to queue")
+			.to("amqp:queue:numbers");
 
-		from("amq:queue:numbers")
-			.id("route-amq-get-number")
-			.log("[AMQ] >>> Getting message ${body} from queue");
+		from("amqp:queue:numbers")
+			.id("route-amqp-get-number")
+			.log("[AMQP] >>> Getting message ${body} from queue");
 
-		// Lab 04
-		from("amq:queue:messages")
-			.id("route-amq-get-message")
-			.log("[AMQ] >>> Getting message ${body} from queue")
+		// Lab 04, Lab 05 (amqp)
+		from("amqp:queue:messages")
+			.id("route-amqp-get-message")
+			.log("[AMQP] >>> Getting message ${body} from queue")
 			.unmarshal("json2pojo")
 			.bean(messageService, "processDone")
 			.marshal("json2pojo")
-			.log("[AMQ] >>> Processed message ${body} from queue");		
+			.log("[AMQP] >>> Processed message ${body} from queue");		
 	}
 
 }

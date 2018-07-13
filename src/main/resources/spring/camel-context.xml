@@ -51,7 +51,7 @@
             <bean id="message-sync" method="sync" ref="messageService"/>
             <marshal id="sync-marshal2json" ref="pojo2json"/>
             <log id="_log3" message="[REST-SYNC] >>> Put Message into AMQ: ${body}"/>
-            <to id="_to3" uri="amq:queue:messages?exchangePattern=InOut"/>
+            <to id="_to3" uri="amqp:queue:messages?exchangePattern=InOut"/>
             <log id="_log4" message="[REST-SYNC] >>> Processed message in Synchronous Mode: ${body}"/>
             <unmarshal id="sync-unmarshal2pojo" ref="json2pojo"/>
         </route>
@@ -61,7 +61,7 @@
             <bean id="message-async" method="async" ref="messageService"/>
             <marshal id="async-marshal2json" ref="pojo2json"/>
             <log id="_log6" message="[REST-ASYNC] >>> Put Message into AMQ: ${body}"/>
-            <wireTap id="wireTap2amq" uri="amq:queue:messages"/>
+            <wireTap id="wireTap2amq" uri="amqp:queue:messages"/>
             <log id="_log7" message="[REST-ASYNC] >>> Processed message in Asynchronous Mode: ${body}"/>
             <unmarshal id="async-unmarshal2pojo" ref="json2pojo"/>
         </route>
@@ -73,27 +73,5 @@
             </transform>
             <log id="route-log" message="[XML] >>> ${body}"/>
         </route>
-        
-        
-        
-        <route id="cbr-route">
-            <from id="_from1" uri="file:work/cbr/input"/>
-            <split id="_split1">
-                <xpath>//orders</xpath>
-                <choice id="_choice1">
-                    <when id="_when1">
-                        <xpath>/order:order/order:type = 'E'</xpath>
-                        <to id="_to1" uri="amqp:queue:electronic"/>
-                    </when>
-                    <otherwise id="_otherwise1">
-                        <recipientList id="_recipientList1">
-                            <simple>http4://otherservice</simple>
-                        </recipientList>
-                    </otherwise>
-                </choice>
-            </split>
-        </route>
-        
-        
     </camelContext>
 </beans>

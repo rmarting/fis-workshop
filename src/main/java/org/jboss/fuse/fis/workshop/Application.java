@@ -27,7 +27,9 @@ import org.springframework.context.annotation.ImportResource;
 // Lab 03
 // @ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/camel-context.xml"})
 // Lab 04
-@ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/api-rest.xml", "classpath:/spring/camel-context.xml"})
+// @ImportResource({"classpath:/spring/amq.xml", "classpath:/spring/api-rest.xml", "classpath:/spring/camel-context.xml"})
+// Lab 05
+@ImportResource({"classpath:/spring/api-rest.xml", "classpath:/spring/camel-context.xml"})
 public class Application {
 
     /**

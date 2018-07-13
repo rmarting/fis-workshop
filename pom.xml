@@ -7,36 +7,51 @@
 
 	<groupId>org.jboss.fuse.fis</groupId>
 	<artifactId>fis-workshop</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 
-	<name>FIS :: WorkShop :: Spring-Boot :: Camel XML </name>
-	<description>Spring Boot example running a Camel route defined in XML</description>
+	<name>Fuse 7 :: WorkShop :: Spring Boot :: Sample Application</name>
+	<description>
+        Spring Boot example running Camel route defined in XML, JavaDSL,
+        RestDSL and AMQP.
+    </description>
 
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Project Properties -->
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<!-- maven plugin versions -->
-		<fabric8.maven.plugin.version>3.5.33.fuse-000023-redhat-3</fabric8.maven.plugin.version>
+        <!-- Spring Boot and Fuse 7 -->
+        <spring-boot.version>1.5.12.RELEASE</spring-boot.version>
+        <spring-cloud-kubernetes.version>0.2.0.RELEASE</spring-cloud-kubernetes.version>
+        <camel.version>2.21.0.fuse-000077-redhat-1</camel.version>
+        <fuse.bom.version>7.0.0.fuse-000027-redhat-1</fuse.bom.version>
 
-		<!-- configure the versions you want to use here -->
-        <fabric8.version>3.0.8.fuse-000023-redhat-4</fabric8.version>
-        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
-
-		<maven-compiler-plugin.version>3.6.0</maven-compiler-plugin.version>
+		<!-- Maven Plugin versions -->
 		<maven-surefire-plugin.version>2.19.1</maven-surefire-plugin.version>
+        <fabric8-maven-plugin.version>3.5.33.fuse-000067-redhat-1</fabric8-maven-plugin.version>
 	</properties>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.fabric8</groupId>
-				<artifactId>fabric8-project-bom-camel-spring-boot</artifactId>
-				<version>${fabric8.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <!-- Fuse 7 BOM -->
+            <dependency>
+                <groupId>org.jboss.redhat-fuse</groupId>
+                <artifactId>fuse-springboot-bom</artifactId>
+                <version>${fuse.bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-spring-boot-dependencies</artifactId>
+                <version>${camel.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -44,40 +59,50 @@
 			<artifactId>javax.inject</artifactId>
 		</dependency>
 
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
 		<!-- Apache Camel Starter -->
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring-boot-starter</artifactId>
 		</dependency>
 
-		<!-- Spring Boot Starters -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<!-- Enabling Health Checks -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
 		<!-- Lab 02 -->
 		<!-- Spring Cloud Kubernetes -->
-		<dependency>
-			<groupId>io.fabric8</groupId>
-			<artifactId>spring-cloud-kubernetes-core</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-kubernetes-config</artifactId>
+            <version>${spring-cloud-kubernetes.version}</version>
+        </dependency>
 
 		<!-- Lab 03 -->
 		<!-- ActiveMQ -->
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-camel</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-pool</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.activemq</groupId> -->
+<!-- 			<artifactId>activemq-camel</artifactId> -->
+<!-- 		</dependency> -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.activemq</groupId> -->
+<!-- 			<artifactId>activemq-pool</artifactId> -->
+<!-- 		</dependency> -->
 
 		<!-- Lab 04 -->
 		<!-- Apache Camel Starters for API REST DSL -->
@@ -93,6 +118,13 @@
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-swagger-java-starter</artifactId>
 		</dependency>
+        
+        <!-- Lab 05 -->
+        <!-- Apache Camel Starter for AMQP -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-amqp-starter</artifactId>
+        </dependency>
 
 		<!-- testing -->
 		<dependency>
@@ -127,15 +159,6 @@
 
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven-surefire-plugin.version}</version>
@@ -164,7 +187,7 @@
 			<plugin>
 				<groupId>io.fabric8</groupId>
 				<artifactId>fabric8-maven-plugin</artifactId>
-				<version>${fabric8.maven.plugin.version}</version>
+				<version>${fabric8-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
