@@ -2,7 +2,7 @@
 # Startup configuration of Spring-cloud-kubernetes
 spring:
   application:
-    name: fis-workshop
+    name: fuse-workshop
   cloud:
     kubernetes:
       reload:
